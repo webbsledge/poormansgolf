@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 assemblyai = "*"
 feedparser = "*"
+pandas = "*"
 
 [dev-packages]
 
