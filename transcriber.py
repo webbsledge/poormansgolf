@@ -3,9 +3,13 @@ from functions import *
 
 API_KEY = 'b1ffed0961df4723b22e1652f782b077'
 SPEAKER_LABELS = True
+rss_url = "https://chasingscratch.libsyn.com/rss"
 
 def main():
-    audio_path = input("Enter the podcast audio path: ")  # audio URL or local path
+    podcast_num = int(input("Which podcast do you want to transcribe? Enter number: ")) - 1  # audio URL or local path
+
+    audio_path = get_link(rss_url, podcast_num)
+
     assembly_ai.settings.api_key = API_KEY
     config = assembly_ai.TranscriptionConfig(speaker_labels=SPEAKER_LABELS)
     try:

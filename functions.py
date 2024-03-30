@@ -1,5 +1,7 @@
 import os
 import assemblyai as assembly_ai
+import feedparser as fp
+import pandas as pd
 
 feed_path = "feed.csv"
 transcript_path = "transcript.txt"
@@ -19,11 +21,28 @@ def format_transcript(transcript):
     return transcript_formatted
 
 
-def read_feed(filepath=feed_path):
-    with open(filepath, 'r') as file_read:
-        # maybe should be readlines()?
-        feed_local = file_read.read()
-    return feed_local
+def get_link(rss_url, podcast_num):
+    feed = fp.parse(rss_url)
+
+    titles = []
+    dates = []
+    links = []
+    keys = ['index', 'title', 'date', 'link']
+
+    for entry in feed.entries:
+        titles.append(entry.title)
+        dates.append(entry.published)
+        links.append(entry.link)
+
+    entry_index = list(range(len(titles)))
+    titles.reverse()
+    dates.reverse()
+    links.reverse()
+
+    podcasts = {k: [v1, v2, v3] for k, v1, v2, v3 in zip(entry_index, titles, dates, links)}
+    podcasts = pd.DataFrame.from_dict(podcasts)
+
+    return podcasts[podcast_num][2]
 
 
 def write_feed(df, filepath=feed_path):
