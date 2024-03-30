@@ -2,7 +2,6 @@ from functions import *
 import feedparser as fp
 import pandas as pd
 
-
 rss_url = "https://chasingscratch.libsyn.com/rss"
 feed = fp.parse(rss_url)
 
@@ -24,7 +23,11 @@ titles.reverse()
 dates.reverse()
 links.reverse()
 
-podcasts = {k: [v1, v2, v3] for k, v1, v2, v3 in zip(entry_index, titles, dates, links)}
+# podcasts = {k: [v1, v2, v3] for k, v1, v2, v3 in zip(entry_index, titles, dates, links)}
+# podcasts = pd.DataFrame.from_dict(podcasts)
+# print(podcasts)
 
-print(podcasts)
+podcasts = pd.DataFrame({'Index': entry_index, 'Title': titles, 'Date': dates, 'Link': links}).T
+
+print(podcasts[0][3])
 
