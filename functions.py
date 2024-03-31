@@ -7,27 +7,12 @@ feed_path = "feed.csv"
 transcript_path = "transcript.txt"
 
 
-def transcribe_audio(audio_path, config):
-    transcriber = assembly_ai.Transcriber()
-    transcript = transcriber.transcribe(audio_path, config)
-    return transcript
-
-
-def format_transcript(transcript):
-    transcript_formatted = ''
-    for utterance in transcript.utterances:
-        utterance = f"Speaker {utterance.speaker}: {utterance.text}\n"
-        transcript_formatted += utterance
-    return transcript_formatted
-
-
 def get_link(rss_url, podcast_num):
     feed = fp.parse(rss_url)
 
     titles = []
     dates = []
     links = []
-    keys = ['index', 'title', 'date', 'link']
 
     for entry in feed.entries:
         titles.append(entry.title)
@@ -43,6 +28,16 @@ def get_link(rss_url, podcast_num):
     podcasts = pd.DataFrame.from_dict(podcasts)
 
     return podcasts[podcast_num][2]
+
+
+def transcribe_audio(audio_path, config):
+    transcriber = assembly_ai.Transcriber()
+    transcript = transcriber.transcribe(audio_path, config)
+    transcript_formatted = ""
+    for utterance in transcript.utterances:
+        utterance = f"Speaker {utterance.speaker}: {utterance.text}\n"
+        transcript_formatted += utterance
+    return transcript_formatted
 
 
 def write_feed(df, filepath=feed_path):
@@ -63,6 +58,3 @@ def print_dict_structure(d, indent=0):
             print_dict_structure(value, indent + 1)
         else:
             print('\t' * (indent + 1) + str(type(value)))
-
-
-# if __name__ == "__main__":
