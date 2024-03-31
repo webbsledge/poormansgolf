@@ -7,18 +7,16 @@ feed_path = "feed.csv"
 transcript_path = "transcript.txt"
 
 
-
 def get_feed_data(rss_url):
     feed = fp.parse(rss_url)
 
     titles = []
     dates = []
-    links = []
+    links = [entry['links'][1]['href'].split('?')[0] for entry in feed['entries']]
 
     for entry in feed.entries:
         titles.append(entry.title)
         dates.append(entry.published)
-        links.append(entry.link)
 
     entry_index = list(range(len(titles)))
     titles.reverse()

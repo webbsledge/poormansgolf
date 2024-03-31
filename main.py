@@ -14,11 +14,11 @@ def main():
 
     audio_path = get_link(podcasts, podcast_num)
 
-    # try:
-    transcript = transcribe_audio(audio_path, config)
-    save_transcript(transcript)
-    # except Exception as e:
-    #     print(f"An error occurred while transcribing the audio: {e}")
+    try:
+        transcript = transcribe_audio(audio_path, config)
+        save_transcript(transcript)
+    except Exception as e:
+        print(f"An error occurred while transcribing the audio: {e}")
 
 
 if __name__ == "__main__":
